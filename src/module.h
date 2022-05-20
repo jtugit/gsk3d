@@ -1094,7 +1094,7 @@ inline void TestCollisionInCell(GridsPoints *****ptrArray,
             {
                 for(j = 0; j < velDistRange_mu; j++)
                 {
-                    velDist_H_output[ii/20][i][j] = (*velDist_H)[i][j];
+                    velDist_H_output[ii/20][i][j] = (*velDist_H)[(uint64_t)i][(uint64_t)j];
                 //    std::cout << velDist_H_output[ii%20][i][j] <<"\n";
                 }
             }

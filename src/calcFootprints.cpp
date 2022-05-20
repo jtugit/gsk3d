@@ -30,8 +30,8 @@ inline void mfd_line_trace(double R0, double xmag, double ymag, double zmag,
 //extern "C" void mfd_line_trace(int*, int*, int*, int*, int*, float*, float*, float*, float*, float*,
 //    float*, float*, float*, float*, float*, float*);
 
-foot3 ****calcFootprints(GridsPoints *****ptrArray,int IYEAR,int IDAY,int IHOUR,int MIN,int ISEC,
-    float pdyn,float dst,float Byimf,float Bzimf)
+foot3 ****calcFootprints(GridsPoints *****ptrArray) //,int IYEAR,int IDAY,int IHOUR,int MIN,int ISEC,
+    //float pdyn,float dst,float Byimf,float Bzimf)
 {
     double xmag,ymag,zmag,xf,yf,zf,R0=1.0+AltitudeMin/radius;
     //float xmag,ymag,zmag,xf,yf,zf,R0=(float)(1.0+AltitudeMin/radius);
@@ -45,7 +45,7 @@ foot3 ****calcFootprints(GridsPoints *****ptrArray,int IYEAR,int IDAY,int IHOUR,
     for (face = 0; face < totalFace; face++) {
         footArray[face] = new foot3 **[fieldsGridsSize + 3];
 
-        for (i = 0; i <= fieldsGridsSize + 2; i++) {
+        for (i = 0; i <= fieldsGridsSize + 1; i++) {
             footArray[face][i] = new foot3 *[fieldsGridsSize + 3];
 
             for (j = 0; j <= fieldsGridsSize + 2; j++) {

@@ -24,8 +24,8 @@ using std::endl;
 using std::vector;
 
 void update_timedate(double);
-foot3 ****calcFootprints(GridsPoints *****ptrArray,int IYEAR,int IDAY,int IHOUR,int MIN,int ISEC,
-    float pdyn,float dst,float Byimf,float Bzimf);
+foot3 ****calcFootprints(GridsPoints *****ptrArray); //,int IYEAR,int IDAY,int IHOUR,int MIN,int ISEC,
+    //float pdyn,float dst,float Byimf,float Bzimf);
 
 //************************************************************************
 //************************************************************************
@@ -258,8 +258,8 @@ void ProcessFunc(double VGSEX, double VGSEY, double VGSEZ, double pdyn, double d
 
     //JTU 3/18/2022. trace field lines to 100 km
     cout << " Calculate footprints of grids" << endl;
-    foot3 ****footArray = calcFootprints(ptrArray,iyr,iday,ihour,imin,isec,(float)pdyn,(float)dst,
-        (float)Byimf,(float)Bzimf);
+    foot3 ****footArray = calcFootprints(ptrArray); //,iyr,iday,ihour,imin,isec,(float)pdyn,(float)dst,
+        //(float)Byimf,(float)Bzimf);
 
     // Initialize particles
     if (continueParticles == 0)

@@ -53,11 +53,12 @@ target_compile_options(gsk3d PRIVATE
     -Wall
     -Wshadow
     -Wextra
-    -Wconversion
-    -Wsign-conversion
+    -Wno-conversion
+    -Wno-sign-conversion
     -Wuninitialized
-    -Wunused
+    -Wno-unused
     -fopenmp
+    -Wno-deprecated-copy
     #$<$<CONFIG:DEBUG>:-g3>
     #$<$<CONFIG:DEBUG>:-Og>
     #$<$<CONFIG:RELEASE>:-O3>  

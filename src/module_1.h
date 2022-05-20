@@ -654,7 +654,7 @@ inline void OperationsInCells(GridsPoints *****ptrArrayGrids,
      {mi0 = mi0_O;
      }
      // index for cell
- #pragma omp parallel for collapse(4)
+ #pragma omp parallel for collapse(4) firstprivate(a)
      for (int f = 0; f < totalFace; f++)
      {
          for (int i = 0; i < fieldsGridsSize; i++)
@@ -849,7 +849,7 @@ inline void MoveParticles(GridsPoints *****ptrArrayGrids,
     }
 
     // f, i, j, k are index of cells
-#pragma omp parallel for collapse(4) private(a)
+#pragma omp parallel for collapse(4) firstprivate(a)
     for (int f = 0; f < totalFace; f++)
     {
         for (int i = 0; i < fieldsGridsSize; i++)
@@ -1085,7 +1085,7 @@ inline void AssignParticles(GridsPoints *****ptrArrayGrids,
         mi0 = mi0_O;
     }*/
     // index for cell
-#pragma omp parallel for collapse(4) private(a)
+#pragma omp parallel for collapse(4) firstprivate(a)
     for (int f = 0; f < totalFace; f++)
     {
         for (int i = 0; i < fieldsGridsSize; i++)

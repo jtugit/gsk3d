@@ -27,23 +27,23 @@ public:
     inline structg InttoStrp1()
     {
         struct structg strg = {0, 0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0};
-        strg.face = posUint >> 61;
+        strg.face = (int)(posUint >> 61);
         //std::cout << posUint << " "<< strg.face <<" "<< strg.ig<<" "<< strg.jg<<" "<< strg.kg << std::endl;
         for (int i = 0; i < fieldsGridsLevel; i++)
         {
-            strg.ig = (strg.ig << 1) + ((posUint >> (60 - i * 3)) & 1);
-            strg.jg = (strg.jg << 1) + ((posUint >> (59 - i * 3)) & 1);
-            strg.kg = (strg.kg << 1) + ((posUint >> (58 - i * 3)) & 1);
+            strg.ig = (strg.ig << 1) + ((int)(posUint >> (60 - i * 3)) & 1);
+            strg.jg = (strg.jg << 1) + ((int)(posUint >> (59 - i * 3)) & 1);
+            strg.kg = (strg.kg << 1) + ((int)(posUint >> (58 - i * 3)) & 1);
         }
         // adjust to domain 1/2
-        strg.kg += (posUint & 1) << fieldsGridsLevel;
+        strg.kg += (int)(posUint & 1 << fieldsGridsLevel);
         //std::cout << posUint << " "<< strg.face <<" "<< strg.ig<<" "<< strg.jg<<" "<< strg.kg << std::endl;
 
         for (int i = fieldsGridsLevel; i < particlesGridsLevel; i++)
         {
-            strg.iw = (strg.iw << 1) + ((posUint >> (60 - i * 3)) & 1);
-            strg.jw = (strg.jw << 1) + ((posUint >> (59 - i * 3)) & 1);
-            strg.kw = (strg.kw << 1) + ((posUint >> (58 - i * 3)) & 1);
+            strg.iw = (strg.iw << 1) + ((int)(posUint >> (60 - i * 3)) & 1);
+            strg.jw = (strg.jw << 1) + ((int)(posUint >> (59 - i * 3)) & 1);
+            strg.kw = (strg.kw << 1) + ((int)(posUint >> (58 - i * 3)) & 1);
         }
         strg.vx = vp.x();
         strg.vy = vp.y();
@@ -67,18 +67,18 @@ public:
     inline structg InttoStrp2()
     {
         struct structg strg;
-        strg.face = posUint >> 61;
+        strg.face = (int)(posUint >> 61);
         for (int i = 0; i < fieldsGridsSize; i++)
         {
-            strg.ig = (strg.ig << 1) + ((posUint >> (60 - i * 3)) & 1);
-            strg.jg = (strg.jg << 1) + ((posUint >> (60 - 1 - i * 3)) & 1);
-            strg.kg = (strg.kg << 1) + ((posUint >> (60 - 2 - i * 3)) & 1);
+            strg.ig = (strg.ig << 1) + ((int)(posUint >> (60 - i * 3)) & 1);
+            strg.jg = (strg.jg << 1) + ((int)(posUint >> (60 - 1 - i * 3)) & 1);
+            strg.kg = (strg.kg << 1) + ((int)(posUint >> (60 - 2 - i * 3)) & 1);
         }
         for (int i = fieldsGridsSize + 1; i < particlesGridsSize; i++)
         {
-            strg.iw = (strg.iw << 1) + ((posUint >> (60 - i * 3) & 1));
-            strg.jw = (strg.jw << 1) + ((posUint >> (60 - 1 - i * 3) & 1));
-            strg.kw = (strg.kw << 1) + ((posUint >> (60 - 2 - i * 3) & 1));
+            strg.iw = (strg.iw << 1) + ((int)(posUint >> (60 - i * 3) & 1));
+            strg.jw = (strg.jw << 1) + ((int)(posUint >> (60 - 1 - i * 3) & 1));
+            strg.kw = (strg.kw << 1) + ((int)(posUint >> (60 - 2 - i * 3) & 1));
         }
         strg.vx = vp.x();
         strg.vy = vp.y();
@@ -358,14 +358,21 @@ public:
         Vector3 tempb6 = ptrArray_in[strg_in1.face][strg_in1.ig + 2][strg_in1.jg + 1][strg_in1.kg + 1]->B3();
         Vector3 tempb7 = ptrArray_in[strg_in1.face][strg_in1.ig + 2][strg_in1.jg + 2][strg_in1.kg + 1]->B3();
         Vector3 tempb8 = ptrArray_in[strg_in1.face][strg_in1.ig + 1][strg_in1.jg + 2][strg_in1.kg + 1]->B3();
-        double w1 = 1.0F - 1.0F * (strg_in1.iw + 0.5F) * (strg_in1.jw + 0.5F) * (strg_in1.kw + 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w2 = 1.0F - 1.0F * (cellSize1 - strg_in1.iw - 0.5F) * (strg_in1.jw + 0.5F) * (strg_in1.kw + 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w3 = 1.0F - 1.0F * (cellSize1 - strg_in1.iw - 0.5F) * (cellSize1 - strg_in1.jw - 0.5F) * (strg_in1.kw + 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w4 = 1.0F - 1.0F * (strg_in1.iw + 0.5F) * (cellSize1 - strg_in1.jw - 0.5F) * (strg_in1.kw + 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w5 = 1.0F - 1.0F * (strg_in1.iw + 0.5F) * (strg_in1.jw + 0.5F) * (cellSize1 - strg_in1.kw - 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w6 = 1.0F - 1.0F * (cellSize1 - strg_in1.iw - 0.5F) * (strg_in1.jw + 0.5F) * (cellSize1 - strg_in1.kw - 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w7 = 1.0F - 1.0F * (cellSize1 - strg_in1.iw - 0.5F) * (cellSize1 - strg_in1.jw - 0.5F) * (cellSize1 - strg_in1.kw - 0.5F) / cellSize1 / cellSize1 / cellSize1;
-        double w8 = 1.0F - 1.0F * (strg_in1.iw + 0.5F) * (cellSize1 - strg_in1.jw - 0.5F) * (cellSize1 - strg_in1.kw - 0.5F) / cellSize1 / cellSize1 / cellSize1;
+
+        double dcellSize1 = (double)cellSize1;
+        double cellSize3 = (double)cellSize1;
+        double strg_in1iw = (double)strg_in1.iw;
+        double strg_in1jw = (double)strg_in1.jw;
+        double strg_in1kw = (double)strg_in1.kw;
+
+        double w1 = 1.0F - 1.0F * (strg_in1iw + 0.5F) * (strg_in1jw + 0.5F) * (strg_in1kw + 0.5F) / cellSize3;
+        double w2 = 1.0F - 1.0F * (dcellSize1 - strg_in1iw - 0.5F) * (strg_in1jw + 0.5F) * (strg_in1kw + 0.5F) / cellSize3;
+        double w3 = 1.0F - 1.0F * (dcellSize1 - strg_in1iw - 0.5F) * (cellSize1 - strg_in1jw - 0.5F) * (strg_in1kw + 0.5F) / cellSize3;
+        double w4 = 1.0F - 1.0F * (strg_in1iw + 0.5F) * (dcellSize1 - strg_in1jw - 0.5F) * (strg_in1kw + 0.5F) / cellSize3;
+        double w5 = 1.0F - 1.0F * (strg_in1iw + 0.5F) * (strg_in1jw + 0.5F) * (dcellSize1 - strg_in1kw - 0.5F) / cellSize3;
+        double w6 = 1.0F - 1.0F * (cellSize1 - strg_in1iw - 0.5F) * (strg_in1jw + 0.5F) * (dcellSize1 - strg_in1kw - 0.5F) / cellSize3;
+        double w7 = 1.0F - 1.0F * (cellSize1 - strg_in1iw - 0.5F) * (dcellSize1 - strg_in1jw - 0.5F) * (cellSize1 - strg_in1kw - 0.5F) / cellSize3;
+        double w8 = 1.0F - 1.0F * (strg_in1iw + 0.5F) * (dcellSize1 - strg_in1jw - 0.5F) * (dcellSize1 - strg_in1kw - 0.5F) / cellSize3;
         tempb.Setx(tempb1.x() * w1 + tempb2.x() * w2 + tempb3.x() * w3 + tempb4.x() * w4 + tempb5.x() * w5 + tempb6.x() * w6 + tempb7.x() * w7 + tempb8.x() * w8);
         tempb.Sety(tempb1.y() * w1 + tempb2.y() * w2 + tempb3.y() * w3 + tempb4.y() * w4 + tempb5.y() * w5 + tempb6.y() * w6 + tempb7.y() * w7 + tempb8.y() * w8);
         tempb.Setz(tempb1.z() * w1 + tempb2.z() * w2 + tempb3.z() * w3 + tempb4.z() * w4 + tempb5.z() * w5 + tempb6.z() * w6 + tempb7.z() * w7 + tempb8.z() * w8);
