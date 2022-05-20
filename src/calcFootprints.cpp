@@ -10,11 +10,10 @@ foot3::foot3()
     xx=0.0; yy=0.0; zz=0.0;
 }
 
-inline void mfd_line_trace(double xmag, double ymag, double zmag, 
+inline void mfd_line_trace(double R0, double xmag, double ymag, double zmag, 
     double &xf, double &yf,double &zf)
 {
     double r, theta, phi, Lshell, sintheta, theta0;
-    double R0=1.0+AltitudeMin/radius;
 
     SPHCAR_08(r, theta, phi, xmag, ymag, zmag, -1);
 
@@ -28,9 +27,14 @@ inline void mfd_line_trace(double xmag, double ymag, double zmag,
     SPHCAR_08(R0, theta0, phi, xf, yf, zf, 1);
 }
 
-foot3 ****calcFootprints(GridsPoints *****ptrArray)
+//extern "C" void mfd_line_trace(int*, int*, int*, int*, int*, float*, float*, float*, float*, float*,
+//    float*, float*, float*, float*, float*, float*);
+
+foot3 ****calcFootprints(GridsPoints *****ptrArray,int IYEAR,int IDAY,int IHOUR,int MIN,int ISEC,
+    float pdyn,float dst,float Byimf,float Bzimf)
 {
-    double xmag,ymag,zmag,xf,yf,zf;
+    double xmag,ymag,zmag,xf,yf,zf,R0=1.0+AltitudeMin/radius;
+    //float xmag,ymag,zmag,xf,yf,zf,R0=(float)(1.0+AltitudeMin/radius);
     int face, i, j, k;
 
     foot3 ****footArray;
@@ -56,9 +60,13 @@ foot3 ****calcFootprints(GridsPoints *****ptrArray)
                         ymag=ptrArray[face][i][j][k]->pos3.y()/radius;
                         zmag=ptrArray[face][i][j][k]->pos3.z()/radius;
 
-                        mfd_line_trace(xmag,ymag,zmag,xf,yf,zf);
+                        mfd_line_trace(R0, xmag, ymag, zmag, xf, yf, zf);
+                        //if (face == 0)
+                        //mfd_line_trace(&IYEAR,&IDAY,&IHOUR,&MIN,&ISEC,&R0,&pdyn,&dst,&Byimf,&Bzimf,
+                        //    &xmag,&ymag,&zmag,&xf,&yf,&zf);
+                        //cout <<setw(3)<<face <<setw(4)<<i<<setw(4)<<j <<setw(4)<<k<<setw(8) << (sqrt(xf*xf+yf*yf+zf*zf)-1.0)*6371.2 <<endl;
 
-                        // field line footprints at 90 km. length in meter
+                        // field line footprints at AltitudeMin. length in meter
                         footArray[face][i][j][k].Setx(xf*radius);
                         footArray[face][i][j][k].Sety(yf*radius);
                         footArray[face][i][j][k].Setz(zf*radius);
